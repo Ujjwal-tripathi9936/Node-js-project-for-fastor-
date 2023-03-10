@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+						initial-scale=1.0">
+    <title>CRM Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<style>
+    #note{
+        display: none;
+    }
+        
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+body{
+   
+    background: linear-gradient(123deg, #71b8e7,#9b59b6);
+}
+
+</style>
+<body>
+    <!-- container div -->
+    <div class="container">
+
+        <!-- upper button section to select
+			the login or signup form -->
+        <div class="slider"></div>
+        <div class="btn">
+            <button class="login">Login</button>
+            <button class="signup">Register</button>
+        </div>
+
+        <!-- Form section that contains the
+			login and the signup form -->
+        <div class="form-section">
+
+            <!-- login form -->
+            <form action="/auth" method="post">
+            <div class="login-box">
+                <input type="email" class="email ele" name="user_email" placeholder="youremail@email.com">
+                <input type="password" id="passInput" class="password ele" name="user_password" placeholder="password">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox"  onclick="hideShowPass()" class="form-check-Info">   Show Password </label>
+                </div>
+                <button class="clkbtn">Login</button>
+            </div>
+        </form>
+            <!-- signup form -->
+           
+            <div class="signup-box">
+                <input type="text" class="name ele" id="name" value="" name="user_name" placeholder="Enter your name">
+                <input type="email" class="email ele" id="email" value="" name="user_email" placeholder="youremail@email.com">
+                
+                <input type="text" class="password ele" value=""  required placeholder="password"
+                min="0"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"name="user_password" id="npassword"><p id="note" style="font-size:10px ;font-weight: bold; color: red;margin-top: 10px;">Note : Password must contain at least one number(0-9) and one uppercase(A-Z) and lowercase(a-z) letter and atleast one special character(@_&*#), and at least 8 or more characters</p>
+                <!-- <input type="password" class="password ele" name="user_password" placeholder="password"> -->
+                <input type="text" class="password ele" value="" placeholder="Confirm password" readonly required name="user_cpassword" id="cpassword">
+                <!-- <input type="password" class="password ele" name="user_cpassword" placeholder="Confirm password"> -->
+                <button  id="fsubmit" type="submit" disabled class="clkbtn">Signup</button>
+            </div>
+        
+        </div>
+    </div>
+    <script src="/static/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function hideShowPass() {
+            var x = document.getElementById("passInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+<script>
+    $("#npassword").keyup(function () {
+        var np = document.getElementById("npassword").value
+        var lowerCaseLetters = /[a-z]/g;
+        var upperCaseLetters = /[A-Z]/g;
+        var numbers = /[0-9]/g;
+        var specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+        if(np.length >= 8 && np.match(lowerCaseLetters) && np.match(upperCaseLetters) && np.match(numbers) && np.match(specialChars) ){
+            document.getElementById("cpassword").removeAttribute("readonly", "");
+            $("#npassword").css("box-shadow", "0px 0px 5px green");
+            $("#note").css("display", "none")
+
+
+
+        }else{
+            $("#npassword").css("box-shadow", "0px 0px 5px red");
+            $("#note").css("display", "block")
+
+            document.getElementById("cpassword").setAttribute("readonly", "")
+
+        }
+
+
+
+  
+    });
+</script>
+<script>
+    $("#cpassword").keyup(function () {
+        var np = document.getElementById("npassword").value
+        var cp = document.getElementById("cpassword").value
+
+        if (np == cp) {
+            $("#cpassword").css("box-shadow", "0px 0px 5px green");
+
+            document.getElementById("fsubmit").disabled = false
+            document.getElementById("fsubmit").style.backgroundColor = "#337ab7";
+            document.getElementById("fsubmit").style.color = "#fff";
+            document.getElementById("fsubmit").style.boxShadow = "0px 0px 5px grey";
+
+        }
+        else {
+            $("#cpassword").css("box-shadow", "0px 0px 5px red");
+
+            document.getElementById("fsubmit").disabled = true
+            document.getElementById("fsubmit").style.backgroundColor = "transparent"
+            document.getElementById("fsubmit").style.backgroundColor = "transparent"
+
+        }
+    });
+</script>
+
+<script>
+    $("#fsubmit").on('click', function () {
+        var name = document.getElementById("name").value
+        var email = document.getElementById("email").value
+        var np = document.getElementById("npassword").value
+        var cp = document.getElementById("cpassword").value
+       
+ 
+        $.ajax({
+            type: "POST",
+            url: "/add_user",
+            data: {
+                user_name: name,
+                user_email: email,
+                user_password: np,
+                user_cpassword: cp
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                swal({
+                    title: "Good job!",
+                    text: "Your Password Is Updated",
+                    icon: "success",
+                    button: "OK",
+                });
+
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000
+                )
+            }
+
+        })
+    });
+</script>
+
+
+</body>
+
+</html>
